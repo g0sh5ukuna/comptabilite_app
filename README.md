@@ -109,6 +109,18 @@ Accédez à l'interface d'administration via [http://127.0.0.1:8000/admin/](http
 
 - `GET` : Générer un fichier Excel avec la balance comptable
 
+## Authentification avec Swagger :
+
+Pour tester les vues protégées via Swagger, suivez ces étapes :
+
+Générez un token JWT en utilisant l'endpoint /api/token/.
+Ouvrez l'interface Swagger à l'adresse http://votre-domaine/swagger/.
+Cliquez sur le bouton "Authorize" en haut à droite.
+Dans la fenêtre pop-up, sélectionnez "Bearer" comme schéma d'autorisation.
+Entrez votre token JWT dans le champ de valeur au format Bearer <votre_token>.
+Cliquez sur "Authorize" pour appliquer le token.
+Vous pouvez maintenant tester les endpoints protégés en utilisant les méthodes disponibles. Swagger inclura automatiquement le token dans l'en-tête Authorization pour chaque requête.
+
 ## Contribuer
 
 1. Forkez le projet
