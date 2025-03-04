@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django.contrib.admin',
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_yasg',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,6 +107,21 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "litera",
     "dark_mode_theme": "darkly",
 }
+
+# settings.py
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Format: Bearer <token>'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}
+
 
 ROOT_URLCONF = 'Test.urls'
 INTERNAL_IPS = [

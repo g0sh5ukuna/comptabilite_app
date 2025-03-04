@@ -15,6 +15,12 @@ from .serializers import AccountSerializer, TransactionSerializer, JournalEntryS
 # 📌 Configuration des logs
 logger = logging.getLogger(__name__)
 
+# Définir l'authentification Bearer
+authorization = openapi.Parameter(
+    'Authorization', openapi.IN_HEADER,
+    description="Bearer <token>", type=openapi.TYPE_STRING
+)
+
 # ✅ Gestion des comptes comptables
 class AccountViewSet(viewsets.ModelViewSet):
     """
@@ -30,7 +36,8 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(
         operation_description="Liste des comptes comptables",
-        responses={200: AccountSerializer(many=True)}
+        responses={200: AccountSerializer(many=True)},
+        manual_parameters=[authorization]
     )
     def list(self, request, *args, **kwargs):
         logger.info("Liste des comptes consultée par %s", request.user)
@@ -39,7 +46,8 @@ class AccountViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(
         operation_description="Créer un nouveau compte comptable",
         request_body=AccountSerializer,
-        responses={201: AccountSerializer}
+        responses={201: AccountSerializer},
+        manual_parameters=[authorization]
     )
     def create(self, request, *args, **kwargs):
         logger.info("Création d'un compte par %s", request.user)
@@ -48,7 +56,8 @@ class AccountViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(
         operation_description="Modifier un compte comptable",
         request_body=AccountSerializer,
-        responses={200: AccountSerializer}
+        responses={200: AccountSerializer},
+        manual_parameters=[authorization]
     )
     def update(self, request, *args, **kwargs):
         logger.info("Modification du compte %s par %s", kwargs['pk'], request.user)
@@ -56,7 +65,8 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(
         operation_description="Supprimer un compte comptable",
-        responses={204: "Compte supprimé"}
+        responses={204: "Compte supprimé"},
+        manual_parameters=[authorization]
     )
     def destroy(self, request, *args, **kwargs):
         logger.warning("Suppression du compte %s par %s", kwargs['pk'], request.user)
@@ -83,7 +93,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(
         operation_description="Supprimer une transaction (Admin seulement)",
-        responses={204: "Transaction supprimée"}
+        responses={204: "Transaction supprimée"},
+        manual_parameters=[authorization]
     )
     def destroy(self, request, *args, **kwargs):
         if not request.user.is_staff:
@@ -102,7 +113,8 @@ class ExportBalanceViewSet(viewsets.ViewSet):
 
     @swagger_auto_schema(
         operation_description="Exporter la balance comptable sous format Excel",
-        responses={200: "Fichier Excel téléchargé"}
+        responses={200: "Fichier Excel téléchargé"},
+        manual_parameters=[authorization]
     )
     @action(detail=False, methods=['get'])
     def export_balance(self, request):
@@ -135,3 +147,15 @@ class JournalEntryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = JournalEntry.objects.all()
     serializer_class = JournalEntrySerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @swagger_auto_schema(
+        manual_parameters=[authorization]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        manual_parameters=[authorization]
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
