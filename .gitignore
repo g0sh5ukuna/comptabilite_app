@@ -31,3 +31,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+dist/
+staticfiles/
+django_server.spec
+jazzmin_patch.py
+start_server.py

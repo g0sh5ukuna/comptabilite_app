@@ -12,6 +12,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 INSTALLED_APPS = [
     'jazzmin',
     'debug_toolbar',
@@ -42,6 +48,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 JAZZMIN_SETTINGS = {
+    "custom_css": "css/jazzmin-fixes.css",
     "site_title": "Comptabilité API",
     "site_header": "Comptabilité API",
     "site_brand": "Comptabilité",

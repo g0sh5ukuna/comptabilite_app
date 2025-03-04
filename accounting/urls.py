@@ -1,4 +1,4 @@
-# gestion/urls.py
+# accounting/urls.py
 from django.urls import path, include, re_path  # Importation des fonctions de routage
 from rest_framework.routers import DefaultRouter  # Importation du routeur par défaut
 from rest_framework import permissions  # Importation des permissions REST
